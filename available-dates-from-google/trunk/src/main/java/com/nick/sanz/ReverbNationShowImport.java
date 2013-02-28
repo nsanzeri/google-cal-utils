@@ -4,13 +4,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
-import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
@@ -105,10 +100,10 @@ public class ReverbNationShowImport {
 			writer.append(',');
 			writer.append("Venue");
 			writer.append(',');
-//			writer.append("City");
-//			writer.append(',');
-//			writer.append("State");
-//			writer.append(',');
+			// writer.append("City");
+			// writer.append(',');
+			// writer.append("State");
+			// writer.append(',');
 			writer.append("Postal Code");
 			writer.append(',');
 			writer.append("Country");
@@ -119,7 +114,6 @@ public class ReverbNationShowImport {
 			writer.append(',');
 			writer.append("Private Show");
 
-
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed sf = input.build(new XmlReader(feedUrl));
 			List<String> datesTaken = new ArrayList<String>();
@@ -127,37 +121,24 @@ public class ReverbNationShowImport {
 			for (Object object : entries) {
 				SyndEntry entry = (SyndEntry) object;
 				System.out.println(entry.getTitle());
-				// System.out.println(entry.getLink());
-				// SyndContentImpl date = (SyndContentImpl)
-				// entry.getContents().get(0);
-				// System.out.println("DATE====== " +
-				// date.getValue().substring(date.getValue().indexOf("When: " +
-				// 6),
-				// date.getValue().indexOf(",")));
-				// System.out.println("BEFORE ENCODE ====== " +
-				// date.getValue());
-				// datesTaken.add(date.getValue().substring(date.getValue().indexOf("When: ",
-				// 1)));
-				// datesTaken.add(date.getValue());
 				String description = entry.getDescription().getValue();
 				String title = entry.getTitle();
 				String venue = title.substring(title.indexOf("Sonics") + 9);
 				venue = venue.replace("&#39;", "");
-				String showDate = description.substring(6,
-						description.indexOf(","));
+				String showDate = description.substring(6, description.indexOf(","));
 				String zipcode = determineZip(description, venue);
 				String desc = determineDecs(description, venue);
 				String privateGig = "N";
-				if (venue.indexOf("Private") > -1){
-					 privateGig = "Y";
-					 zipcode = "60605";
+				if (venue.indexOf("Private") > -1) {
+					privateGig = "Y";
+					zipcode = "60605";
 				}
-				
+
 				System.out.println("Show date = " + showDate);
 				datesTaken.add(showDate);
 				System.out.println();
 
-				//========== Build CSV File ==========
+				// ========== Build CSV File ==========
 				writer.append("\n"); // Date
 				writer.append(showDate); // Date
 				writer.append(',');
@@ -165,11 +146,11 @@ public class ReverbNationShowImport {
 				writer.append(',');
 				writer.append(venue); // Venue
 				writer.append(',');
-//				writer.append("City");
-//				writer.append(',');
-//				writer.append("State");
-//				writer.append(',');
-				writer.append(zipcode); //Postal Code
+				// writer.append("City");
+				// writer.append(',');
+				// writer.append("State");
+				// writer.append(',');
+				writer.append(zipcode); // Postal Code
 				writer.append(',');
 				writer.append("US"); // Country
 				writer.append(',');
@@ -178,8 +159,8 @@ public class ReverbNationShowImport {
 				writer.append("21+");
 				writer.append(',');
 				writer.append(privateGig); // Private Show
-				
-				//========== Build CSV File ==========
+
+				// ========== Build CSV File ==========
 			}
 			writer.flush();
 			writer.close();
@@ -193,8 +174,7 @@ public class ReverbNationShowImport {
 	private static String determineDecs(String description, String venue) {
 		String desc = "";
 		if (!venue.contains("Private")) {
-				desc = description.substring(description.indexOf("Where:") + 6,
-						description.lastIndexOf("<br>") - 1);
+			desc = description.substring(description.indexOf("Where:") + 6, description.lastIndexOf("<br>") - 1);
 		}
 		return desc;
 	}
@@ -203,17 +183,15 @@ public class ReverbNationShowImport {
 		String zipcode = "";
 		if (venue.equals("Jambalaya")) {
 			zipcode = "60175";
-		} else if(venue.contains("Captain")){
+		} else if (venue.contains("Captain")) {
 			zipcode = "60002";
-		}else{
+		} else {
 
 			if (description.indexOf("IL,") != -1) {
-				zipcode = description.substring(description.indexOf("IL,") + 4,
-						description.indexOf("IL,") + 9);
+				zipcode = description.substring(description.indexOf("IL,") + 4, description.indexOf("IL,") + 9);
 
 			} else {
-				zipcode = description.substring(description.indexOf("IL") + 3,
-						description.indexOf("IL") + 8);
+				zipcode = description.substring(description.indexOf("IL") + 3, description.indexOf("IL") + 8);
 			}
 		}
 		if (!zipcode.startsWith("6")) {
