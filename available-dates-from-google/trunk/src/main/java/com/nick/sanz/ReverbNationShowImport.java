@@ -156,7 +156,7 @@ public class ReverbNationShowImport {
 				writer.append(',');
 				writer.append(desc); // Details
 				writer.append(',');
-				writer.append("21+");
+				writer.append("21+"); // Age Limit
 				writer.append(',');
 				writer.append(privateGig); // Private Show
 
