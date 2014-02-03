@@ -51,7 +51,7 @@ public class GetAvailableDatesFromXml {
 		System.out.println("WEEKENDS ****************************************************");
 		Month monthenum = null;
 		boolean isFirstPrint = true;
-		int year = 2013;
+		int year = 2014;
 		int month = Calendar.FEBRUARY;
 		int monthHold = Calendar.FEBRUARY;
 		int yearHold = year;
