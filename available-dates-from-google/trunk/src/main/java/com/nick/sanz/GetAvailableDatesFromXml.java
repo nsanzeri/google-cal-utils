@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -23,37 +25,28 @@ public class GetAvailableDatesFromXml {
 		SyndFeedInput input = new SyndFeedInput();
 		SyndFeed sf = input.build(new XmlReader(feedUrl));
 		List<String> datesTaken = new ArrayList<String>();
-		List entries = sf.getEntries();
-		Iterator it = entries.iterator();
-		while (it.hasNext()) {
-			SyndEntry entry = (SyndEntry) it.next();
-			System.out.println(entry.getTitle());
-			// System.out.println(entry.getLink());
-			// SyndContentImpl date = (SyndContentImpl)
-			// entry.getContents().get(0);
-			// System.out.println("DATE====== " +
-			// date.getValue().substring(date.getValue().indexOf("When: " + 6),
-			// date.getValue().indexOf(",")));
-			// System.out.println("BEFORE ENCODE ====== " + date.getValue());
-			// datesTaken.add(date.getValue().substring(date.getValue().indexOf("When: ",
-			// 1)));
-			// datesTaken.add(date.getValue());
+		List<SyndEntry> entries = sf.getEntries();
+		for (SyndEntry entry : entries) {
+			System.out.println(StringEscapeUtils.unescapeHtml(entry.getTitle()));
+		}
+		System.out.println("****************************************************");
+		for (SyndEntry entry : entries) {
 			SyndContent description = entry.getDescription();
-			System.out.println(description.getValue().substring(6, description.getValue().indexOf(",")));
+			System.out.println(description.getValue().substring(10, description.getValue().indexOf(",")) + " 2014");
 			datesTaken.add(description.getValue().substring(6, description.getValue().indexOf(",")));
-			System.out.println();
 		}
 
 		System.out.println("****************************************************");
-		for (String dateString : datesTaken) {
-			System.out.println(dateString);
-		}
+
+//		for (String dateString : datesTaken) {
+//			System.out.println(dateString);
+//		}
 		System.out.println("WEEKENDS ****************************************************");
 		Month monthenum = null;
 		boolean isFirstPrint = true;
 		int year = 2014;
-		int month = Calendar.FEBRUARY;
-		int monthHold = Calendar.FEBRUARY;
+		int month = Calendar.JANUARY;
+		int monthHold = Calendar.JANUARY;
 		int yearHold = year;
 		Calendar cal = new GregorianCalendar(year, month, 3);
 
