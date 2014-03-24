@@ -30,7 +30,7 @@ import com.sun.syndication.io.XmlReader;
  * 
  */
 public class CreateFbEvents {
-	private static String myToken = "AAACEdEose0cBAHmsErKLE9zC8kAhLAJq6xj1q9cZBEnQGCmPnSBRVmbf3zVMllo5Xa4nOfXc3HZBhK2hZAUaiTWyp6rXKgM0oZBTPbUK1tCZAuEjuDOjW";
+	private static String myToken = "CAACEdEose0cBAJo6xZBJfUZB8sHcHyZCBJ5k5jMbZCf2rbJyexx7QmQ4iZCrP4ZAGz00e4xAKdkCPr232OHJbpezbtbE04XaycPDf3biE9TmWur1uLEPB6N0CkrMjJban0kVIaGRtW8Dr69rndSc42sVZB5t89qQ9UZD";
 
 	public static void main(String args[]) {
 		try {
@@ -84,7 +84,7 @@ public class CreateFbEvents {
 					break;
 				}
 			}
-		} catch (IllegalArgumentException | FeedException | IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -92,7 +92,7 @@ public class CreateFbEvents {
 	}
 
 	private static Date formatGoogleDate(String googDate) {
-	    String target = googDate + " 21:30:30 cst 2013";
+	    String target = googDate + " 21:30:30 cst 2014";
 	    DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
 	    Date date = null;
 		try {
