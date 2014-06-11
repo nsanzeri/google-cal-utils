@@ -37,11 +37,11 @@ public class CreateRSSFeed {
 			List<SyndEntry> entries = sf.getEntries();
 			for (int i = 0; i < entries.size(); i++) {
 				SyndEntry entry = entries.get(i);
-				if (i < 10){
+				if (i < 4){
 					nextTen.add(entry);
 				}
 			}
-//			Collections.reverse(nextTen);
+			Collections.reverse(nextTen);
 			for (SyndEntry entry : nextTen) {
 				System.out.println(entry.getTitle());
 				String description = entry.getDescription().getValue();
@@ -67,7 +67,7 @@ public class CreateRSSFeed {
 				writer.append("<title>Hooked On Sonics @ " + venue + " - " + desc + "</title>\n"); // Title that appears in site
 				writer.append("<link>" + link + "</link>\n"); // Link
 				writer.append("<guid>" + link + "</guid>\n"); // Link
-				writer.append("<pubDate>" + showDate.substring(0, 3) + "," + showDate.substring(3) + " 2014 20:00:00 CST</pubDate>\n"); // Show date
+				writer.append("<pubDate>" + showDate.substring(0, 3) + "," + showDate.substring(3) + " 2014 12:00:00 CST</pubDate>\n"); // Show date
 				writer.append("<description>" + desc + "</description>\n"); // Show date
 				writer.append("</item>\n"); // Each item is a show
 				
