@@ -44,8 +44,8 @@ public class GetAvailableDatesFromXml {
 		Month monthenum = null;
 		boolean isFirstPrint = true;
 		int year = 2014;
-		int month = Calendar.JANUARY;
-		int monthHold = Calendar.JANUARY;
+		int month = Calendar.OCTOBER;
+		int monthHold = Calendar.OCTOBER;
 		int yearHold = year;
 		Calendar cal = new GregorianCalendar(year, month, 3);
 
