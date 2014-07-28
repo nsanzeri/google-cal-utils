@@ -31,12 +31,15 @@ public class TodayInHistory {
 			String title = StringEscapeUtils.unescapeHtml(entry.getTitle());
 			System.out.println(StringEscapeUtils.unescapeHtml(entry.getTitle()));
 			String date = description.getValue().substring(10, (description.getValue().indexOf(",") + 6));
+			String monthday = description.getValue().substring(10, (description.getValue().indexOf(",")));
+			String year = description.getValue().substring(description.getValue().indexOf(","), description.getValue().indexOf(",") + 8);
 			String month = monthenum.make(cal.get(Calendar.MONTH) + 1).toShortString();
 			if (date.contains(" " + cal.get(Calendar.DATE) + ",")
 					&& date.contains(month)
 					){
-				sb.append("Today In Hooked On Sonics History\n");
-				sb.append(title + " " + date + "\n\n");
+				sb.append("Today in Hooked On Sonics history: " + monthday + "\n");
+				sb.append(year + " - " + title + "\n");
+				sb.append("#HookedOnSonicsHistory\n\n");
 			}
 		}
 		System.out.println("============= Historic events ==========================");
