@@ -32,9 +32,9 @@ public class TodayInHistory {
 			System.out.println(StringEscapeUtils.unescapeHtml(entry.getTitle()));
 			String date = description.getValue().substring(10, (description.getValue().indexOf(",") + 6));
 			String monthday = description.getValue().substring(10, (description.getValue().indexOf(",")));
-			String year = description.getValue().substring(description.getValue().indexOf(","), description.getValue().indexOf(",") + 8);
+			String year = description.getValue().substring(description.getValue().indexOf(",") + 2, description.getValue().indexOf(",") + 6);
 			String month = monthenum.make(cal.get(Calendar.MONTH) + 1).toShortString();
-			if (date.contains(" " + cal.get(Calendar.DATE) + ",")
+			if (date.contains(" " + (cal.get(Calendar.DATE) - 0) + ",")
 					&& date.contains(month)
 					){
 				sb.append("Today in Hooked On Sonics history: " + monthday + "\n");
