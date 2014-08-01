@@ -26,6 +26,8 @@ public class TodayInHistory {
 		List<String> datesTaken = new ArrayList<String>();
 		List<SyndEntry> entries = sf.getEntries();
 		StringBuffer sb = new StringBuffer();
+		sb.append("Today in Hooked On Sonics history: ");
+		Boolean firstDate = true;
 		for (SyndEntry entry : entries) {
 			SyndContent description = entry.getDescription();
 			String title = StringEscapeUtils.unescapeHtml(entry.getTitle());
@@ -35,14 +37,20 @@ public class TodayInHistory {
 			String monthday = description.getValue().substring(10, (description.getValue().indexOf(",")));
 			String year = description.getValue().substring(description.getValue().indexOf(",") + 2, description.getValue().indexOf(",") + 6);
 			String month = monthenum.make(cal.get(Calendar.MONTH) + 1).toShortString();
-			if (date.contains(" " + (cal.get(Calendar.DATE) + 2) + ",")
+			if (date.contains(" " + (cal.get(Calendar.DATE) + 1) + ",")
 					&& date.contains(month)
 					){
-				sb.append("Today in Hooked On Sonics history: " + monthday + "\n");
+				if (firstDate){
+					sb.append(monthday + "\n\n");	
+				}else{
+					sb.append( "\n");
+				}
+				firstDate = false;
 				sb.append(year + " - " + title + " (" + where + ")\n");
-				sb.append("#HookedOnSonicsHistory\n\n");
+				
 			}
 		}
+		sb.append("#HookedOnSonicsHistory\n\n");
 		System.out.println("============= Historic events ==========================");
 		System.out.println(sb.toString());
 		System.out.println("============= Historic events - END ==========================");
