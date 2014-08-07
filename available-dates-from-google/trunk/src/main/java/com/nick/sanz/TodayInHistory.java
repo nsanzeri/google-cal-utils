@@ -28,16 +28,22 @@ public class TodayInHistory {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Today in Hooked On Sonics history: ");
 		Boolean firstDate = true;
+		String holdYear = "2002";
+		System.out.println("\n==== Year = " + holdYear);
 		for (SyndEntry entry : entries) {
 			SyndContent description = entry.getDescription();
 			String title = StringEscapeUtils.unescapeHtml(entry.getTitle());
 			String where = description.getValue().substring((description.getValue().indexOf("Where:") + 7), (description.getValue().indexOf("<br>Event") - 1));
-			System.out.println(StringEscapeUtils.unescapeHtml(entry.getTitle()));
 			String date = description.getValue().substring(10, (description.getValue().indexOf(",") + 6));
 			String monthday = description.getValue().substring(10, (description.getValue().indexOf(",")));
 			String year = description.getValue().substring(description.getValue().indexOf(",") + 2, description.getValue().indexOf(",") + 6);
+			if (!year.equals(holdYear)){
+				System.out.println("\n==== Year = " + year);
+				holdYear = year;
+			}
+			System.out.println(StringEscapeUtils.unescapeHtml(entry.getTitle()));
 			String month = monthenum.make(cal.get(Calendar.MONTH) + 1).toShortString();
-			if (date.contains(" " + (cal.get(Calendar.DATE) + 1) + ",")
+			if (date.contains(" " + (cal.get(Calendar.DATE) + 0) + ",")
 					&& date.contains(month)
 					){
 				if (firstDate){
