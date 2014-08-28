@@ -125,7 +125,7 @@ public class ReverbNationShowImport {
 				String title = entry.getTitle();
 				String venue = title.substring(title.indexOf("Sonics") + 9);
 				venue = venue.replace("&#39;", "");
-				String showDate = description.substring(6, description.indexOf(","));
+				String showDate = description.substring(6, description.indexOf(",")) + description.substring(description.indexOf(",") + 1, description.indexOf(",") + 6 );
 				String zipcode = determineZip(description, venue);
 				String desc = determineDecs(description, venue);
 				String privateGig = "N";
