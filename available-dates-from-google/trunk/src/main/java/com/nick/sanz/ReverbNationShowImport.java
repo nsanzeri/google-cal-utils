@@ -93,6 +93,7 @@ public class ReverbNationShowImport {
 			String feed = "https://www.google.com/calendar/feeds/pjjfdgelvdjtuvrr89tun3nu7k%40group.calendar.google.com/public/basic?futureevents=true&orderby=starttime&sortorder=ascending&max-results=100&hl=en";
 			URL feedUrl = new URL(feed);
 			FileWriter writer = new FileWriter("c:\\hos-gig-import.csv");
+			String curYear = "2014";
 
 			writer.append("Date");
 			writer.append(',');
@@ -125,7 +126,7 @@ public class ReverbNationShowImport {
 				String title = entry.getTitle();
 				String venue = title.substring(title.indexOf("Sonics") + 9);
 				venue = venue.replace("&#39;", "");
-				String showDate = description.substring(6, description.indexOf(",")) + description.substring(description.indexOf(",") + 1, description.indexOf(",") + 6 );
+				String showDate = description.substring(6, description.indexOf(","));
 				String zipcode = determineZip(description, venue);
 				String desc = determineDecs(description, venue);
 				String privateGig = "N";
@@ -134,6 +135,13 @@ public class ReverbNationShowImport {
 					zipcode = "60605";
 				}
 
+				
+				if (showDate.indexOf("Jan") != -1){
+					curYear = "2015";
+				}
+				
+				
+				showDate = showDate + " " + curYear;
 				System.out.println("Show date = " + showDate);
 				datesTaken.add(showDate);
 				System.out.println();
@@ -181,18 +189,11 @@ public class ReverbNationShowImport {
 
 	private static String determineZip(String description, String venue) {
 		String zipcode = "";
-		if (venue.equals("Jambalaya")) {
-			zipcode = "60175";
-		} else if (venue.contains("Captain")) {
-			zipcode = "60002";
+		if (description.indexOf("IL,") != -1) {
+			zipcode = description.substring(description.indexOf("IL,") + 4, description.indexOf("IL,") + 9);
+
 		} else {
-
-			if (description.indexOf("IL,") != -1) {
-				zipcode = description.substring(description.indexOf("IL,") + 4, description.indexOf("IL,") + 9);
-
-			} else {
-				zipcode = description.substring(description.indexOf("IL") + 3, description.indexOf("IL") + 8);
-			}
+			zipcode = description.substring(description.indexOf("IL") + 3, description.indexOf("IL") + 8);
 		}
 		if (!zipcode.startsWith("6")) {
 			zipcode = "";
