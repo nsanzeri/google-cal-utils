@@ -46,11 +46,6 @@ public class CreateFbEvents {
 			System.out.println("User name: " + user.getName());
 			System.out.println("Page likes: " + page.getLikes());
 
-			// Publishing an event
-
-//			Date tomorrow = new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 24L);
-//			Date twoDaysFromNow = new Date(System.currentTimeMillis() + 1000L * 60L * 60L * 48L);
-
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed sf;
 			sf = input.build(new XmlReader(feedUrl));
