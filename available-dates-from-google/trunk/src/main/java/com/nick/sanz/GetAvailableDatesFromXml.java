@@ -62,6 +62,20 @@ public class GetAvailableDatesFromXml {
 				int day = cal.get(Calendar.DAY_OF_WEEK);
 				// check if it is a Saturday or Sunday
 				String searchDate = "";
+
+
+				if (cal.get(Calendar.MONTH) != monthHold) {
+					if (cal.get(Calendar.YEAR) != yearHold) {
+						yearHold = cal.get(Calendar.YEAR);
+					}
+					System.out.println("");
+					System.out.println("");
+					System.out.println(monthenum.make(cal.get(Calendar.MONTH) + 1) + " - " + cal.get(Calendar.YEAR));
+					System.out.println("------------");
+					isFirstPrint = false;
+					monthHold = cal.get(Calendar.MONTH);
+				}
+				
 				if (day == Calendar.FRIDAY) {
 					searchDate = "Fri " + cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH);
 					if (!datesTaken.contains(searchDate)){
@@ -77,18 +91,6 @@ public class GetAvailableDatesFromXml {
 
 				}
 
-
-				if (cal.get(Calendar.MONTH) != monthHold) {
-					if (cal.get(Calendar.YEAR) != yearHold) {
-						yearHold = cal.get(Calendar.YEAR);
-					}
-					System.out.println("");
-					System.out.println("");
-					System.out.println(monthenum.make(cal.get(Calendar.MONTH) + 1) + " - " + cal.get(Calendar.YEAR));
-					System.out.println("------------");
-					isFirstPrint = false;
-					monthHold = cal.get(Calendar.MONTH);
-				}
 
 				// advance to the next day
 				cal.add(Calendar.DAY_OF_YEAR, 1);
