@@ -1,6 +1,5 @@
 package com.nick.sanz;
 import java.net.URL;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,18 +24,16 @@ public class TodayInHistory {
 		SyndFeed sf = input.build(new XmlReader(feedUrl));
 		List<String> datesTaken = new ArrayList<String>();
 		List<SyndEntry> entries = sf.getEntries();
-		StringBuffer sb = new StringBuffer();
+		
 		Boolean firstDate = true;
 		String holdYear = "2002";
 		System.out.println("\n==== Year = " + holdYear);
-		System.out.println("============= Historic events ==========================");
-		int dayCount = 6;
+		int dayCount = 10;
 		int counter = dayCount;
 		boolean firstRun = true;
 		for (int i = 0; i < counter; i++) {
-			sb.append("Today in Hooked On Sonics history: ");
-			createEntry(monthenum, cal, entries, sb, firstDate, holdYear, dayCount, firstRun);
-			sb.append("\n");
+			createEntry(monthenum, cal, entries, firstDate, holdYear, dayCount, firstRun);
+
 			dayCount--;
 			firstRun = false;
 		}
@@ -54,7 +51,10 @@ public class TodayInHistory {
 
 	}
 
-	private static void createEntry(Month monthenum, Calendar cal, List<SyndEntry> entries, StringBuffer sb, Boolean firstDate, String holdYear, int dayCount, boolean firstRun) {
+	private static void createEntry(Month monthenum, Calendar cal, List<SyndEntry> entries, Boolean firstDate, String holdYear, int dayCount, boolean firstRun) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("Today in Hooked On Sonics history: ");
+		int gigCount = 1;
 		for (SyndEntry entry : entries) {
 			SyndContent description = entry.getDescription();
 			String title = StringEscapeUtils.unescapeHtml(entry.getTitle());
@@ -62,12 +62,15 @@ public class TodayInHistory {
 			String date = description.getValue().substring(10, (description.getValue().indexOf(",") + 6));
 			String monthday = description.getValue().substring(10, (description.getValue().indexOf(",")));
 			String year = description.getValue().substring(description.getValue().indexOf(",") + 2, description.getValue().indexOf(",") + 6);
+			
 			if (firstRun) {
 				if (!year.equals(holdYear)) {
 					System.out.println("\n==== Year = " + year);
 					holdYear = year;
+					 gigCount = 1;
 				}
-				System.out.println(StringEscapeUtils.unescapeHtml(entry.getTitle()) + "   ---  " + date);
+				System.out.println(gigCount + ". " +StringEscapeUtils.unescapeHtml(entry.getTitle()) + "   ---  " + date);
+				 gigCount++;
 			}
 			String month = monthenum.make(cal.get(Calendar.MONTH) + 1).toShortString();
 			if (date.contains(" " + (cal.get(Calendar.DATE) - (dayCount - 1)) + ",") && date.contains(month)) {
@@ -75,68 +78,37 @@ public class TodayInHistory {
 					sb.append(monthday + "\n");
 				}
 				firstDate = false;
-				sb.append(year + " - " + title + " (" + where + ")\n");
+				sb.append(year + " - " + removeHookedOs(title) + " (" + removePlace(title, where) + ")\n");
 				
 			}
 		}
-		
-		
+		if (firstRun) {
+			System.out.println("============= Historic events ==========================");
+		}
 		System.out.println(sb.toString());
 		
 	}
-	
-	public enum Month {
-		Jan(1), Feb(2), Mar(3), Apr(4), May(5), Jun(6), Jul(7), Aug(8), Sep(9), Oct(10), Nov(11), Dec(12);
 
-		private static DateFormatSymbols dateFormatSymbols = new DateFormatSymbols();
-		private static final int[] LAST_DAY_OF_MONTH = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-		public int index;
-
-		Month(int index) {
-			this.index = index;
+	private static String removeHookedOs(String title) {
+		if (title.contains("Hooked On Sonics @")){
+			title = title.substring(19);
 		}
-
-		public static Month make(int monthIndex) {
-			for (Month m : Month.values()) {
-				if (m.index == monthIndex)
-					return m;
-			}
-			throw new IllegalArgumentException("Invalid month index " + monthIndex);
+		if (title.contains("HOS @")){
+			title = title.substring(6);
 		}
-
-		public int lastDay() {
-			return LAST_DAY_OF_MONTH[index];
-		}
-
-		public int quarter() {
-			return 1 + (index - 1) / 3;
-		}
-
-		public String toString() {
-			return dateFormatSymbols.getMonths()[index - 1];
-		}
-
-		public String toShortString() {
-			return dateFormatSymbols.getShortMonths()[index - 1];
-		}
-
-		public static Month parse(String s) {
-			s = s.trim();
-			for (Month m : Month.values())
-				if (m.matches(s))
-					return m;
-
-			try {
-				return make(Integer.parseInt(s));
-			} catch (NumberFormatException e) {
-			}
-			throw new IllegalArgumentException("Invalid month " + s);
-		}
-
-		private boolean matches(String s) {
-			return s.equalsIgnoreCase(toString()) || s.equalsIgnoreCase(toShortString());
-		}
+		return title;
 	}
+	
+	private static String removePlace(String title, String where) {
+		if (title.contains("Private") || title.contains("Private Party") || title.contains("Private Wedding")){
+			where = "";
+		}
+//		if (where.contains(",")){
+//			where = where.substring(where.indexOf(",") + 2);
+//		}
+		return where;
+	}
+	
+
 
 }
