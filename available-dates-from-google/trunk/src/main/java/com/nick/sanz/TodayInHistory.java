@@ -28,7 +28,7 @@ public class TodayInHistory {
 		Boolean firstDate = true;
 		String holdYear = "2002";
 		System.out.println("\n==== Year = " + holdYear);
-		int dayCount = 10;
+		int dayCount = 3;
 		int counter = dayCount;
 		boolean firstRun = true;
 		for (int i = 0; i < counter; i++) {

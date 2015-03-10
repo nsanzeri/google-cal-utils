@@ -43,9 +43,9 @@ public class GetAvailableDatesFromXml {
 		System.out.println("WEEKENDS ****************************************************");
 		Month monthenum = null;
 		boolean isFirstPrint = true;
-		int year = 2014;
-		int month = Calendar.OCTOBER;
-		int monthHold = Calendar.OCTOBER;
+		int year = 2015;
+		int month = Calendar.MARCH;
+		int monthHold = Calendar.MARCH;
 		int yearHold = year;
 		Calendar cal = new GregorianCalendar(year, month, 3);
 
@@ -76,13 +76,13 @@ public class GetAvailableDatesFromXml {
 					monthHold = cal.get(Calendar.MONTH);
 				}
 				
-				if (day == Calendar.FRIDAY) {
-					searchDate = "Fri " + cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH);
-					if (!datesTaken.contains(searchDate)){
-						System.out.println(searchDate);
-					}
-
-				}
+//				if (day == Calendar.FRIDAY) {
+//					searchDate = "Fri " + cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH);
+//					if (!datesTaken.contains(searchDate)){
+//						System.out.println(searchDate);
+//					}
+//
+//				}
 				if (day == Calendar.SATURDAY) {
 					searchDate = "Sat " + cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.US) + " " + cal.get(Calendar.DAY_OF_MONTH);
 					if (!datesTaken.contains(searchDate)){

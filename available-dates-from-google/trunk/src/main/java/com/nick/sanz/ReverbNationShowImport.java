@@ -92,83 +92,18 @@ public class ReverbNationShowImport {
 
 			String feed = "https://www.google.com/calendar/feeds/pjjfdgelvdjtuvrr89tun3nu7k%40group.calendar.google.com/public/basic?futureevents=true&orderby=starttime&sortorder=ascending&max-results=100&hl=en";
 			URL feedUrl = new URL(feed);
-			FileWriter writer = new FileWriter("c:\\hos-gig-import.csv");
-			String curYear = "2014";
+			FileWriter writer = new FileWriter("e:\\hos-gig-import.csv");
+			StringBuilder sysOut = new StringBuilder();
+			String curYear = "2015";
 
-			writer.append("Date");
-			writer.append(',');
-			writer.append("Time");
-			writer.append(',');
-			writer.append("Venue");
-			writer.append(',');
-			// writer.append("City");
-			// writer.append(',');
-			// writer.append("State");
-			// writer.append(',');
-			writer.append("Postal Code");
-			writer.append(',');
-			writer.append("Country");
-			writer.append(',');
-			writer.append("Details");
-			writer.append(',');
-			writer.append("Age Limit");
-			writer.append(',');
-			writer.append("Private Show");
+			buildHeader(writer, sysOut);
 
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed sf = input.build(new XmlReader(feedUrl));
 			List<String> datesTaken = new ArrayList<String>();
 			List entries = sf.getEntries();
 			for (Object object : entries) {
-				SyndEntry entry = (SyndEntry) object;
-				System.out.println(entry.getTitle());
-				String description = entry.getDescription().getValue();
-				String title = entry.getTitle();
-				String venue = title.substring(title.indexOf("Sonics") + 9);
-				venue = venue.replace("&#39;", "");
-				String showDate = description.substring(6, description.indexOf(","));
-				String zipcode = determineZip(description, venue);
-				String desc = determineDecs(description, venue);
-				String privateGig = "N";
-				if (venue.indexOf("Private") > -1) {
-					privateGig = "Y";
-					zipcode = "60605";
-				}
-
-				
-				if (showDate.indexOf("Jan") != -1){
-					curYear = "2015";
-				}
-				
-				
-				showDate = showDate + " " + curYear;
-				System.out.println("Show date = " + showDate);
-				datesTaken.add(showDate);
-				System.out.println();
-
-				// ========== Build CSV File ==========
-				writer.append("\n"); // Date
-				writer.append(showDate); // Date
-				writer.append(',');
-				writer.append("21:00p"); // Date
-				writer.append(',');
-				writer.append(venue); // Venue
-				writer.append(',');
-				// writer.append("City");
-				// writer.append(',');
-				// writer.append("State");
-				// writer.append(',');
-				writer.append(zipcode); // Postal Code
-				writer.append(',');
-				writer.append("US"); // Country
-				writer.append(',');
-				writer.append(desc); // Details
-				writer.append(',');
-				writer.append("21+"); // Age Limit
-				writer.append(',');
-				writer.append(privateGig); // Private Show
-
-				// ========== Build CSV File ==========
+				curYear = buildEntry(writer, curYear, datesTaken, object);
 			}
 			writer.flush();
 			writer.close();
@@ -176,6 +111,109 @@ public class ReverbNationShowImport {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	private static String buildEntry(FileWriter writer, String curYear, List<String> datesTaken, Object object) throws IOException {
+		StringBuilder eventOut = new StringBuilder();
+		SyndEntry entry = (SyndEntry) object;
+//		System.out.println(entry.getTitle());
+		String description = entry.getDescription().getValue();
+		String title = entry.getTitle();
+		String venue = title.substring(title.indexOf("Sonics") + 9);
+		venue = venue.replace("&#39;", "");
+		String showDate = description.substring(6, description.indexOf(","));
+		String zipcode = determineZip(description, venue);
+		String desc = determineDecs(description, venue);
+		String privateGig = "N";
+		if (venue.indexOf("Private") > -1) {
+			privateGig = "Y";
+			zipcode = "60605";
+		}
+
+		
+		if (showDate.indexOf("Jan") != -1){
+			curYear = "2015";
+		}
+		
+		
+		showDate = showDate + " " + curYear;
+//		System.out.println("Show date = " + showDate);
+		datesTaken.add(showDate);
+//		System.out.println();
+
+		// ========== Build CSV File ==========
+		writer.append("\n"); // Date
+		writer.append(showDate); // Date
+		writer.append(',');
+		writer.append("21:00p"); // Date
+		writer.append(',');
+		writer.append(venue); // Venue
+		writer.append(',');
+		writer.append(zipcode); // Postal Code
+		writer.append(',');
+		writer.append("US"); // Country
+		writer.append(',');
+		writer.append("This will be a great time"); // Details
+		writer.append(',');
+		writer.append("21+"); // Age Limit
+		writer.append(',');
+		writer.append(privateGig); // Private Show
+
+		eventOut.append("\n"); // Date
+		eventOut.append(showDate); // Date
+		eventOut.append(',');
+		eventOut.append("21:00p"); // Date
+		eventOut.append(',');
+		eventOut.append(venue); // Venue
+		eventOut.append(',');
+		eventOut.append(zipcode); // Postal Code
+		eventOut.append(',');
+		eventOut.append("US"); // Country
+		eventOut.append(',');
+		eventOut.append("This will be a great time"); // Details
+		eventOut.append(',');
+		eventOut.append("21+"); // Age Limit
+		eventOut.append(',');
+		eventOut.append(privateGig); // Private Show
+		// ========== Build CSV File ==========
+		System.out.println(eventOut.toString());
+		return curYear;
+	}
+
+	private static void buildHeader(FileWriter writer, StringBuilder sysOut) throws IOException {
+		writer.append("Date");
+		writer.append(',');
+		writer.append("Time");
+		writer.append(',');
+		writer.append("Venue");
+		writer.append(',');
+		writer.append("Postal Code");
+		writer.append(',');
+		writer.append("Country");
+		writer.append(',');
+		writer.append("Details");
+		writer.append(',');
+		writer.append("Age Limit");
+		writer.append(',');
+		writer.append("Private Show");
+		
+		sysOut.append("Date");
+		sysOut.append(',');
+		sysOut.append("Time");
+		sysOut.append(',');
+		sysOut.append("Venue");
+		sysOut.append(',');
+		sysOut.append("Postal Code");
+		sysOut.append(',');
+		sysOut.append("Country");
+		sysOut.append(',');
+		sysOut.append("Details");
+		sysOut.append(',');
+		sysOut.append("Age Limit");
+		sysOut.append(',');
+		sysOut.append("Private Show");
+		System.out.println(sysOut.toString());
 
 	}
 
@@ -197,6 +235,13 @@ public class ReverbNationShowImport {
 		}
 		if (!zipcode.startsWith("6")) {
 			zipcode = "";
+		}
+		if (venue.contains("Dannys Pub and Grill")){
+			zipcode = "60563";
+		}else if (venue.contains("Reefpoint Brewhouse")){
+				zipcode = "53403";
+		}else if (venue.contains("St Charles")){
+			zipcode = "60174";
 		}
 		return zipcode;
 	}
